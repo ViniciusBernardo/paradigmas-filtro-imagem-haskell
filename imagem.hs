@@ -26,15 +26,11 @@ addSpace xs width = if length xs <= width
                     else take width xs ++ "\n" ++ addSpace (drop width xs) width
 
 mountImage :: [String] -> Int -> Int -> [Pixel] -> [[Pixel]] -> [[Pixel]]
-mountImage [] _ _ _ a = a
+mountImage [] _ _ c d = d ++ [c]
 mountImage xs counter width listPixels image = do
     let slicedList = take 3 xs
     if counter < width
-    then do
-        [listPixels] ++ [[Pixel (read (slicedList!!0) :: Int) (read (slicedList!!1) :: Int) (read (slicedList!!2) :: Int)]]
-        drop 3 xs
-        mountImage xs (counter+1) width listPixels image
-    else do
-        image ++ [listPixels]
-        listPixels <- []
-        mountImage xs 0 width listPixels image
+        then do
+            mountImage (drop 3 xs) (counter+1) width (listPixels ++ [Pixel (read (slicedList!!0) :: Int) (read (slicedList!!1) :: Int) (read (slicedList!!2) :: Int)]) image
+        else do
+            mountImage xs 0 width [] (image ++ [listPixels])
