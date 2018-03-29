@@ -1,0 +1,1 @@
+# paradigmas-filtro-imagem-haskell
