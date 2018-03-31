@@ -1,4 +1,4 @@
-module FiltroNegativo (Pixel(..), somaLista) where
+module FiltroNegativo (Pixel(..), filtroNegativo) where
 
 data Pixel = Pixel {red :: Int, green :: Int, blue :: Int} deriving (Show)
 
@@ -11,14 +11,19 @@ getGreen (Pixel {red = r, green = g, blue = b}) = g
 getBlue :: Pixel -> Int
 getBlue (Pixel {red = r, green = g, blue = b}) = b
 
+operationOverPixel f (Pixel {red = r, green = g, blue = b}) = Pixel (f r) (f g) (f b)
+
+operationOverLinePixel f [] = []
+operationOverLinePixel f (h:t) = [operationOverPixel f h] ++ (operationOverLinePixel f t)
+
 data Image = Image {pixels :: [[Pixel]]} deriving (Show)
 
 getPixel :: Image -> Int -> Int -> Pixel
 getPixel (Image {pixels = p}) row column = p!!row!!column
 
-somaLista :: [String] -> String
-somaLista [] = []
-somaLista (h:t) = unwords([show(15 - (read h :: Int))]) ++ " " ++ somaLista(t)
+filtroNegativo :: [[Pixel]] -> [[Pixel]]
+filtroNegativo [] = []
+filtroNegativo (h:t) = [operationOverLinePixel (255-) h] ++ filtroNegativo(t)
 
 
 addSpace xs width = if length xs <= width
