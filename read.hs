@@ -1,29 +1,35 @@
 import System.IO
+import Imagem
 
 main = do
-    f <- openBinaryFile "bla.ppm" ReadMode
+    f <- openBinaryFile "../unb_77p3.ppm" ReadMode
     numeroMagico <- hGetLine f
-    line <- hGetLine f
     line <- hGetLine f
     let size = words line
     line <- hGetLine f
     contents <- hGetContents f
     let foo = words contents
-    let listPixels = map(read::String->Int) foo
-    let soma = somaLista(listPixels)
-    appendFile "foo_negativo.ppm" (numeroMagico ++ "\n")
-    appendFile "foo_negativo.ppm" (size!!0 ++ " " ++ size!!1 ++ "\n")
-    appendFile "foo_negativo.ppm" (line ++ "\n")
-    --appendFile "dado_negativo.ppm" (filter(/=' ')(unwords(map toEnum listPixels)))
-    let listString = unwords(map show soma)
-    appendFile "foo_negativo.ppm" (addSpace listString ((read (size!!0) :: Int)))
-    --appendFile "x_negativo.ppm" (ola)
+    print(size)
+    let listPixels = tail $ mountImage foo 0 (read (size!!0) :: Int) [] [[]]
+    let filterApplied = filtroNegativo listPixels
+    save_ppm "../unb_77p3_negativo.ppm" filterApplied
     hClose f
 
 addSpace xs width = if length xs <= 18
                     then xs 
                     else take 18 xs ++ "\n" ++ addSpace (drop 18 xs) width
 
-somaLista :: [Char] -> [Int]
-somaLista [] = []
-somaLista (h:t) = unwords([show(15 - (read h :: Int))]) ++ somaLista(t)
+save_ppm :: FilePath -> [[Pixel]] -> IO ()
+save_ppm f css = writeFile f $ make_ppm css
+
+make_ppm :: [[Pixel]] -> String
+make_ppm css =
+  "P3\n" ++ (show $ length $ head css) ++ " " ++ (show $ length css) ++ "\n255\n" ++
+  (unlines $ map unwords $ group 15 $ map show $ concatMap colour $ concat css)
+
+group _ [] = []
+group n xs =
+  let (xs0,xs1) = splitAt n xs
+  in  xs0 : group n xs1
+
+colour (Pixel r g b) = [r,g,b]

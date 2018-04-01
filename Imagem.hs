@@ -1,4 +1,4 @@
-module FiltroNegativo (Pixel(..), filtroNegativo) where
+module Imagem (Pixel(..), filtroNegativo, mountImage) where
 
 data Pixel = Pixel {red :: Int, green :: Int, blue :: Int} deriving (Show)
 
