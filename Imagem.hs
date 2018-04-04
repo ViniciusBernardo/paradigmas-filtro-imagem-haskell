@@ -1,4 +1,4 @@
-module Imagem (Pixel(..), filtroNegativo, mountImage) where
+module Imagem (Pixel(..), mountImage, operationOverLinePixel, getRed, getGreen, getBlue, setPixel) where
 
 data Pixel = Pixel {red :: Int, green :: Int, blue :: Int} deriving (Show)
 
@@ -11,19 +11,18 @@ getGreen (Pixel {red = r, green = g, blue = b}) = g
 getBlue :: Pixel -> Int
 getBlue (Pixel {red = r, green = g, blue = b}) = b
 
-operationOverPixel f (Pixel {red = r, green = g, blue = b}) = Pixel (f r) (f g) (f b)
+setPixel :: Pixel -> Int -> Int -> Int -> Pixel
+setPixel pixel r g b = Pixel r g b
 
-operationOverLinePixel f [] = []
-operationOverLinePixel f (h:t) = [operationOverPixel f h] ++ (operationOverLinePixel f t)
+operationOverPixel fR fG fB (Pixel {red = r, green = g, blue = b}) = Pixel (truncate(fR (fromIntegral r))) (truncate(fG (fromIntegral g))) (truncate(fB (fromIntegral b)))
+
+operationOverLinePixel fR fG fB [] = []
+operationOverLinePixel fR fG fB (h:t) = [operationOverPixel fR fG fB h] ++ (operationOverLinePixel fR fG fB t)
 
 data Image = Image {pixels :: [[Pixel]]} deriving (Show)
 
 getPixel :: Image -> Int -> Int -> Pixel
 getPixel (Image {pixels = p}) row column = p!!row!!column
-
-filtroNegativo :: [[Pixel]] -> [[Pixel]]
-filtroNegativo [] = []
-filtroNegativo (h:t) = [operationOverLinePixel (255-) h] ++ filtroNegativo(t)
 
 
 addSpace xs width = if length xs <= width

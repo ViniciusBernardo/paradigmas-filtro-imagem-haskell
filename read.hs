@@ -1,5 +1,6 @@
 import System.IO
 import Imagem
+import Filtros
 
 main = do
     f <- openBinaryFile "../unb_77p3.ppm" ReadMode
@@ -12,7 +13,7 @@ main = do
     print(size)
     let listPixels = tail $ mountImage foo 0 (read (size!!0) :: Int) [] [[]]
     let filterApplied = filtroNegativo listPixels
-    save_ppm "../unb_77p3_negativo.ppm" filterApplied
+    save_ppm "../unb_77p3_negativo2.ppm" filterApplied
     hClose f
 
 addSpace xs width = if length xs <= 18
