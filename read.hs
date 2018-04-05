@@ -3,8 +3,12 @@ import Imagem
 import Filtros
 
 main = do
-    f <- openBinaryFile "../unb_77p3.ppm" ReadMode
+    f <- openBinaryFile "../xadrexp3.ppm" ReadMode
     numeroMagico <- hGetLine f
+    line <- hGetLine f
+    line <- hGetLine f
+    line <- hGetLine f
+    line <- hGetLine f
     line <- hGetLine f
     let size = words line
     line <- hGetLine f
@@ -12,8 +16,8 @@ main = do
     let foo = words contents
     print(size)
     let listPixels = tail $ mountImage foo 0 (read (size!!0) :: Int) [] [[]]
-    let filterApplied = filtroNegativo listPixels
-    save_ppm "../unb_77p3_negativo2.ppm" filterApplied
+    let filterApplied = filtroPolarizado listPixels
+    save_ppm "../xadrexp3_polarizado.ppm" filterApplied
     hClose f
 
 addSpace xs width = if length xs <= 18

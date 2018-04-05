@@ -1,4 +1,4 @@
-module Filtros (filtroNegativo, filtroPretoEBranco) where
+module Filtros (filtroNegativo, filtroPretoEBranco, filtroPolarizado) where
 import Imagem (Pixel, operationOverLinePixel, getRed, getGreen, getBlue, setPixel)
 import Data.Typeable (typeOf)
 
@@ -22,3 +22,22 @@ calculaEscalaCinza (h:t) = do
             [setPixel h 255 255 255] ++ (calculaEscalaCinza t)
     else do
         [setPixel h escala_cinza escala_cinza escala_cinza] ++ (calculaEscalaCinza t)
+
+
+filtroPolarizado :: [[Pixel]] -> [[Pixel]]
+filtroPolarizado [] = []
+filtroPolarizado (h:t) = [calculaPolarizacao h] ++ (filtroPolarizado t)
+
+calculaPolarizacao :: [Pixel] -> [Pixel]
+calculaPolarizacao [] = []
+calculaPolarizacao (h:t) = do
+    let value_red = if (getRed h) > truncate(255/2)
+                    then 255
+                    else 0
+    let value_green = if (getGreen h) > truncate(255/2)
+                      then 255
+                      else 0
+    let value_blue = if (getBlue h) > truncate(255/2)
+                     then 255
+                     else 0
+    [setPixel h value_red value_green value_blue] ++ (calculaPolarizacao t)
