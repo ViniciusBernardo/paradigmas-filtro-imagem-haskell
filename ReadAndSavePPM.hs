@@ -1,6 +1,18 @@
-module ReadAndSavePPM (save_ppm) where
+module ReadAndSavePPM (save_ppm, leArquivo) where
 import System.IO
 import Imagem
+
+leArquivo file counter header = do
+    line <- hGetLine file
+    if line!!0 == '#'
+        then (leArquivo file counter header)
+        else if counter < 2
+            then (leArquivo file (counter+1) (header ++ (words line)))
+        else do
+            contents <- hGetContents file
+            let image = (tail $ mountImage (words contents) 0 (read (header!!1) :: Int) [] [[]])
+            return (image)
+
 
 save_ppm :: FilePath -> [[Pixel]] -> IO ()
 save_ppm f css = writeFile f $ make_ppm css

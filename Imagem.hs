@@ -19,16 +19,6 @@ operationOverPixel fR fG fB (Pixel {red = r, green = g, blue = b}) = Pixel (trun
 operationOverLinePixel fR fG fB [] = []
 operationOverLinePixel fR fG fB (h:t) = [operationOverPixel fR fG fB h] ++ (operationOverLinePixel fR fG fB t)
 
-data Image = Image {pixels :: [[Pixel]]} deriving (Show)
-
-getPixel :: Image -> Int -> Int -> Pixel
-getPixel (Image {pixels = p}) row column = p!!row!!column
-
-
-addSpace xs width = if length xs <= width
-                    then xs 
-                    else take width xs ++ "\n" ++ addSpace (drop width xs) width
-
 mountImage :: [String] -> Int -> Int -> [Pixel] -> [[Pixel]] -> [[Pixel]]
 mountImage [] _ _ c d = d ++ [c]
 mountImage xs counter width listPixels image = do
