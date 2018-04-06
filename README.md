@@ -29,6 +29,6 @@ Para finalizar, escolha os filtros e o nome da imagem com o(s) filtro(s) aplicad
 
 ## Referências Bibliográficas
 
-https://wiki.haskell.org/Library_for_PPM_images
-https://www.haskell.org/platform/
+https://wiki.haskell.org/Library_for_PPM_images </br>
+https://www.haskell.org/platform/ </br>
 https://www.haskell.org/hoogle/
