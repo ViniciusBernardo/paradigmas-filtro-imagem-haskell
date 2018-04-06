@@ -19,7 +19,7 @@ No interpretador, carrege o arquivo principal com o comando abaixo:
 
 Após isso, para rodar o programa, utilize a função menu, da seguinte forma:
 
-`menu [[]] True`
+`main`
 
 Insira o caminho da imagem (na pasta doc já existem algumas imagens), por exemplo:
 
