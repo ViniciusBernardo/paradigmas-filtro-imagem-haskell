@@ -4,12 +4,15 @@ import ReadAndSavePPM
 import System.IO
 
 menu _ True = do
-    putStrLn "Insira o nome o arquivo (formato .ppm)"
+    hSetBuffering stdin LineBuffering
+    putStrLn "Insira o nome o arquivo de entrada (formato .ppm)"
     filePath <- getLine
     f <- openBinaryFile filePath ReadMode
     image <- leArquivo f 0 []
     menu image False
 menu image False = do
+    hSetBuffering stdin LineBuffering
+
     putStrLn "------------------------Menu de Operações--------------------------"
     putStrLn "- (1) Negativo                               (2) Polarizado       -"
     putStrLn "- (3) Preto e Branco                         (4) Sair             -"
@@ -27,9 +30,9 @@ menu image False = do
         else do
             putStrLn "Escolha uma opção válida!\n"
             (menu image False)
-    putStrLn "Imagem salva com sucesso!"
 
 salvaArquivo imagem = do
-    putStrLn "Insira o nome o arquivo (formato .ppm)"
+    putStrLn "Insira o nome o arquivo de saída (formato .ppm)"
     filePath <- getLine
     save_ppm filePath imagem
+    putStrLn "Imagem salva com sucesso!"
